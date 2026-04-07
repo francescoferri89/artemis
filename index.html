@@ -194,7 +194,7 @@
             </ul>
             
             <div class="input-group">
-                <label>1. Determina la forza gravitazionale (in N) esercitata dalla Terra sulla navicella quando essa si trova in orbita a 400 km di altitudine: </label><br>
+                <label>1. Determina l'accelerazione di gravità (in m/s^2) quando la navicella si trova a 400km di altitudine: </label><br>
                 <input type="text" id="l3_f1">
             </div>
             <div class="input-group">
@@ -285,7 +285,7 @@
         }
 
         function validateL3() {
-            validateNumeric('l3_f1', 230164);
+            validateNumeric('l3_f1', 8.69);
             validateNumeric('l3_f2', 98.8);
             document.getElementById('level4').classList.remove('hidden');
             window.scrollTo({ top: document.getElementById('level4').offsetTop, behavior: 'smooth' });
@@ -299,7 +299,7 @@
             if(isCorrect(document.getElementById('l2_fc').value, 2943)) score += 8;
             if(isCorrect(document.getElementById('l2_v').value, 17.72)) score += 8;
             if(isCorrect(document.getElementById('l2_f').value, 0.352)) score += 8;
-            if(isCorrect(document.getElementById('l3_f1').value, 230164)) score += 10;
+            if(isCorrect(document.getElementById('l3_f1').value, 8.69)) score += 10;
             if(isCorrect(document.getElementById('l3_f2').value, 98.8)) score += 10;
             
             validateNumeric('l4_v', 646.3);
