@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missione Artemis II - IIS Maxwell</title>
     <style>
-        /* IMPORTA I FONT DA GOOGLE */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Orbitron:wght@500;700&display=swap');
 
         :root {
             --nasa-blue: #0b3d91;
             --nasa-red: #fc3d21;
+            --nasa-green: #2ecc71;
             --dark-bg: rgba(18, 18, 18, 0.85);
             --panel-bg: rgba(30, 30, 30, 0.95);
             --text-main: #e0e0e0;
@@ -60,7 +60,6 @@
             font-size: 1.2em;
             padding: 15px 30px;
             border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(11, 61, 145, 0.6);
             animation: pulse 2s infinite; 
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
@@ -85,10 +84,26 @@
         a { color: #4da6ff; text-decoration: none; }
         .missione-img { width: 100%; max-width: 600px; height: auto; border-radius: 8px; display: block; margin: 25px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
         
-        .question { margin-bottom: 20px; }
+        .question { margin-bottom: 20px; padding: 10px; border-radius: 5px; transition: 0.3s; }
         .input-group { margin-bottom: 15px; }
-        input[type="text"] { background-color: #333; border: 1px solid #555; color: white; padding: 8px; border-radius: 4px; width: 150px; font-family: 'Montserrat', sans-serif; }
         
+        input[type="text"] { 
+            background-color: #333; 
+            border: 2px solid #555; 
+            color: white; 
+            padding: 8px; 
+            border-radius: 4px; 
+            width: 150px; 
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s;
+        }
+
+        /* Classi per il feedback */
+        .correct-bg { background-color: rgba(46, 204, 113, 0.2); border: 1px solid var(--nasa-green) !important; }
+        .wrong-bg { background-color: rgba(252, 61, 33, 0.2); border: 1px solid var(--nasa-red) !important; }
+        .correct-text { color: var(--nasa-green) !important; font-weight: bold; }
+        .wrong-text { color: var(--nasa-red) !important; font-weight: bold; }
+
         .action-btn {
             background-color: var(--nasa-blue);
             color: white;
@@ -99,10 +114,8 @@
             cursor: pointer;
             font-weight: 600;
             margin-top: 15px;
-            transition: background 0.3s;
             font-family: 'Montserrat', sans-serif;
         }
-        .action-btn:hover { background-color: #092c68; }
 
         #punteggioBox {
             margin-top: 30px;
@@ -113,7 +126,6 @@
             text-align: center;
             font-size: 1.6em;
             font-family: 'Orbitron', sans-serif;
-            color: #51cf66;
         }
 
         .sources { font-size: 0.85em; color: #aaa; margin-top: 20px; border-top: 1px dashed #555; padding-top: 10px; }
@@ -123,7 +135,7 @@
 
     <div class="hero-section">
         <div class="header">
-            <h1>Missione di fisica: Artemis II</h1>
+            <h1>Simulatore Artemis II</h1>
             <h2>Istituto d'Istruzione Superiore "J. C. Maxwell"</h2>
         </div>
         <button id="startBtn" class="start-btn" onclick="startMission()">Inizia la Missione ▼</button>
@@ -138,101 +150,89 @@
             
             <img src="orion.jpg" alt="Navicella Orion" class="missione-img">
             
-            <p>Al termine della lettura, rispondete alle seguenti domande per sbloccare il livello successivo.</p>
-            
-            <div class="question">
+            <div id="q1_box" class="question">
                 <p><strong>1. Qual è l'obiettivo primario della missione Artemis II?</strong></p>
                 <input type="radio" name="q1" value="A"> A) Effettuare il primo allunaggio umano al Polo Sud lunare.<br>
                 <input type="radio" name="q1" value="B"> B) Effettuare un sorvolo umano attorno alla Luna per testare i sistemi di supporto vitale.<br>
                 <input type="radio" name="q1" value="C"> C) Mettere in orbita i primi moduli della stazione Lunar Gateway.<br>
-                <input type="radio" name="q1" value="D"> D) Raccogliere campioni di regolite lunare tramite bracci robotici.
+                <input type="radio" name="q1" value="D"> D) Raccogliere campioni di regolite lunare.
             </div>
 
-            <div class="question">
-                <p><strong>2. Quale veicolo spaziale, spinto dal potente razzo SLS, ospiterà l'equipaggio durante il viaggio?</strong></p>
+            <div id="q2_box" class="question">
+                <p><strong>2. Quale veicolo spaziale, spinto dal razzo SLS, ospiterà l'equipaggio durante il viaggio?</strong></p>
                 <input type="radio" name="q2" value="A"> A) La navicella Crew Dragon.<br>
                 <input type="radio" name="q2" value="B"> B) La capsula Apollo.<br>
                 <input type="radio" name="q2" value="C"> C) La navicella Orion.<br>
                 <input type="radio" name="q2" value="D"> D) Lo Space Shuttle.
             </div>
 
-            <div class="question">
-                <p><strong>3. Che tipo di traiettoria seguirà la navicella per tornare sulla Terra in sicurezza senza necessità di accensioni motore prolungate?</strong></p>
-                <input type="radio" name="q3" value="A"> A) Un'orbita circolare bassa (Low Lunar Orbit).<br>
+            <div id="q3_box" class="question">
+                <p><strong>3. Che tipo di traiettoria seguirà la navicella per tornare sulla Terra in sicurezza?</strong></p>
+                <input type="radio" name="q3" value="A"> A) Un'orbita circolare bassa.<br>
                 <input type="radio" name="q3" value="B"> B) Una traiettoria a spirale continua.<br>
                 <input type="radio" name="q3" value="C"> C) Un'orbita geostazionaria.<br>
                 <input type="radio" name="q3" value="D"> D) Una traiettoria di "ritorno libero" (free-return trajectory).
             </div>
 
-            <button class="action-btn" onclick="scrollNext('level2')">Prossimo Livello</button>
+            <button class="action-btn" onclick="validateL1()">Prossimo Livello</button>
         </div>
 
         <div id="level2" class="level-container hidden">
             <h3>Livello 2: Moto Circolare – Addestramento Astronauti</h3>
-            <p>Prima di affrontare lo spazio, l'equipaggio deve prepararsi alle intense accelerazioni della fase di lancio. La centrifuga umana di addestramento è composta da un braccio meccanico alla cui estremità è fissata una cabina che si muove di moto circolare uniforme.</p>
+            <p>Consideriamo un astronauta di massa <strong>m = 75 kg</strong> in una centrifuga di raggio <strong>r = 8.0 m</strong> con accelerazione centripeta pari a <strong>4g</strong> (g = 9.81 m/s²).</p>
             
             <img src="centrifuga.jpg" alt="Centrifuga NASA" class="missione-img">
 
-            <p>Consideriamo un astronauta di massa <strong>m = 75 kg</strong> all'interno di una centrifuga con un braccio di raggio <strong>r = 8.0 m</strong>. Durante un test di resistenza, la rotazione deve generare sulla cabina un'accelerazione centripeta pari a <strong>4g</strong> (dove g = 9.81 m/s² è l'accelerazione di gravità terrestre).</p>
-            
             <div class="input-group">
-                <label>1. Determina l'intensità della forza centripeta agente sull'astronauta (in N): </label>
-                <input type="text" id="l2_fc" placeholder="es. 1500">
+                <label>1. Forza centripeta (N): </label>
+                <input type="text" id="l2_fc">
             </div>
             <div class="input-group">
-                <label>2. Calcola la velocità tangenziale della cabina (in m/s): </label>
-                <input type="text" id="l2_v" placeholder="es. 10.5">
+                <label>2. Velocità tangenziale (m/s): </label>
+                <input type="text" id="l2_v">
             </div>
             <div class="input-group">
-                <label>3. Qual è la frequenza di rotazione necessaria (in Hz)? </label>
-                <input type="text" id="l2_f" placeholder="es. 0.5">
+                <label>3. Frequenza di rotazione (Hz): </label>
+                <input type="text" id="l2_f">
             </div>
             
-            <button class="action-btn" onclick="scrollNext('level3')">Prossimo Livello</button>
+            <button class="action-btn" onclick="validateL2()">Prossimo Livello</button>
             <div class="sources">Fonte: <a href="https://www.nasa.gov/centers-and-facilities/ames/human-centrifuge/" target="_blank">NASA Ames Research Center - Human Centrifuge</a></div>
         </div>
 
         <div id="level3" class="level-container hidden">
             <h3>Livello 3: Gravitazione Universale – In viaggio verso la Luna</h3>
-            <p>Lasciata l'orbita terrestre, occupiamoci della forza di gravità subìta dalla navicella Orion durante il suo viaggio. La navicella Orion ha una massa approssimativa di <strong>m = 26500 kg</strong>.</p>
-            <p>Utilizza i seguenti dati:</p>
-            <ul>
-                <li>G = 6.67 × 10⁻¹¹ N·m²/kg²</li>
-                <li>Massa della Terra (M_t) = 5.97 × 10²⁴ kg</li>
-                <li>Raggio della Terra (R_t) = 6371 km</li>
-                <li>Massa della Luna (M_l) = 7.35 × 10²² kg</li>
-                <li>Distanza media Terra-Luna (centro-centro) = 3.84 × 10⁸ m</li>
-            </ul>
+            <p>Navicella Orion <strong>m = 26500 kg</strong>. (G = 6.67 × 10⁻¹¹)</p>
             
             <div class="input-group">
-                <label>1. Determina la forza gravitazionale (in N) esercitata dalla Terra sulla navicella quando essa si trova in orbita a 400 km di altitudine: </label>
-                <input type="text" id="l3_f1" placeholder="es. 250000">
+                <label>1. Forza Terra a 400 km di altitudine (N): </label>
+                <input type="text" id="l3_f1">
             </div>
             <div class="input-group">
-                <label>2. Calcola l'intensità della forza gravitazionale totale (forza netta) sulla navicella quando si trova a una distanza di 300.000 km dal centro della Terra, lungo la linea che congiunge i due corpi: </label>
-                <input type="text" id="l3_f2" placeholder="es. 100">
+                <label>2. Forza netta a 300.000 km dal centro Terra (N): </label>
+                <input type="text" id="l3_f2">
             </div>
             
-            <button class="action-btn" onclick="scrollNext('level4')">Prossimo Livello</button>
-            <div class="sources">Fonti dati: <a href="https://www.nasa.gov/specials/artemis/" target="_blank">Orion Reference Guide</a> | <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/lunafact.html" target="_blank">NASA Lunar Fact Sheet</a></div>
+            <button class="action-btn" onclick="validateL3()">Prossimo Livello</button>
+            <div class="sources">Fonti: <a href="https://www.nasa.gov/wp-content/uploads/2022/11/orion-reference-guide.pdf" target="_blank">Orion Reference Guide</a> | <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/lunafact.html" target="_blank">NASA Lunar Fact Sheet</a></div>
         </div>
 
         <div id="level4" class="level-container hidden">
             <h3>Livello 4: Moto Circolare e Orbita Lunare</h3>
-            <p>Approssimiamo un'ipotetica traiettoria della navicella Orion attorno alla Luna come un'orbita circolare uniforme a un'altitudine <strong>h = 10.000 km</strong> dalla superficie lunare (Raggio Luna = 1737 km). Affinché l'orbita sia stabile, la forza di gravità lunare funge da forza centripeta.</p>
+            <p>Altitudine <strong>h = 10.000 km</strong> dalla superficie lunare (R Luna = 1737 km).</p>
             
-            <img src="orbita_lunare.jpg" alt="Rappresentazione Orbita Lunare" class="missione-img">
+            <img src="orbita_lunare.jpg" class="missione-img">
             
             <div class="input-group">
-                <label>1. Calcola la velocità tangenziale necessaria per mantenere questa orbita (in m/s): </label>
-                <input type="text" id="l4_v" placeholder="es. 500">
+                <label>1. Velocità tangenziale (m/s): </label>
+                <input type="text" id="l4_v">
             </div>
             <div class="input-group">
-                <label>2. Qual è il periodo orbitale della navicella (espresso in ore)? </label>
-                <input type="text" id="l4_t" placeholder="es. 24.5">
+                <label>2. Periodo orbitale (ore): </label>
+                <input type="text" id="l4_t">
             </div>
             
-            <button class="action-btn" onclick="calcolaPunteggio()">TERMINA MISSIONE E VEDI PUNTEGGIO</button>
+            <button class="action-btn" onclick="calcolaPunteggio()">TERMINA E VEDI PUNTEGGIO</button>
             <div id="risultatoFinale"></div>
         </div>
 
@@ -245,38 +245,73 @@
             document.getElementById('level1').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function scrollNext(id) {
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
         function isCorrect(val, target) {
             let n = parseFloat(String(val).replace(',', '.'));
             return n >= target * 0.9 && n <= target * 1.1;
         }
 
+        function applyColor(id, correct) {
+            let el = document.getElementById(id);
+            if (correct) {
+                el.classList.add('correct-bg');
+                el.classList.remove('wrong-bg');
+            } else {
+                el.classList.add('wrong-bg');
+                el.classList.remove('correct-bg');
+            }
+        }
+
+        function validateL1() {
+            let q1 = document.querySelector('input[name="q1"]:checked')?.value;
+            let q2 = document.querySelector('input[name="q2"]:checked')?.value;
+            let q3 = document.querySelector('input[name="q3"]:checked')?.value;
+
+            document.getElementById('q1_box').className = 'question ' + (q1 === 'B' ? 'correct-text' : 'wrong-text');
+            document.getElementById('q2_box').className = 'question ' + (q2 === 'C' ? 'correct-text' : 'wrong-text');
+            document.getElementById('q3_box').className = 'question ' + (q3 === 'D' ? 'correct-text' : 'wrong-text');
+
+            document.getElementById('level2').classList.remove('hidden');
+            document.getElementById('level2').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function validateL2() {
+            applyColor('l2_fc', isCorrect(document.getElementById('l2_fc').value, 2943));
+            applyColor('l2_v', isCorrect(document.getElementById('l2_v').value, 17.72));
+            applyColor('l2_f', isCorrect(document.getElementById('l2_f').value, 0.352));
+            
+            document.getElementById('level3').classList.remove('hidden');
+            document.getElementById('level3').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function validateL3() {
+            applyColor('l3_f1', isCorrect(document.getElementById('l3_f1').value, 230164));
+            applyColor('l3_f2', isCorrect(document.getElementById('l3_f2').value, 98.8));
+            
+            document.getElementById('level4').classList.remove('hidden');
+            document.getElementById('level4').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function calcolaPunteggio() {
             let score = 0;
-            // Livello 1 (30 punti)
+            // Calcolo finale per box punteggio
             if(document.querySelector('input[name="q1"]:checked')?.value === 'B') score += 10;
             if(document.querySelector('input[name="q2"]:checked')?.value === 'C') score += 10;
             if(document.querySelector('input[name="q3"]:checked')?.value === 'D') score += 10;
-            
-            // Livello 2 (24 punti)
             if(isCorrect(document.getElementById('l2_fc').value, 2943)) score += 8;
             if(isCorrect(document.getElementById('l2_v').value, 17.72)) score += 8;
             if(isCorrect(document.getElementById('l2_f').value, 0.352)) score += 8;
-            
-            // Livello 3 (20 punti)
             if(isCorrect(document.getElementById('l3_f1').value, 230164)) score += 10;
             if(isCorrect(document.getElementById('l3_f2').value, 98.8)) score += 10;
             
-            // Livello 4 (26 punti)
-            if(isCorrect(document.getElementById('l4_v').value, 646.3)) score += 13;
-            if(isCorrect(document.getElementById('l4_t').value, 31.7)) score += 13;
+            let v4 = isCorrect(document.getElementById('l4_v').value, 646.3);
+            let t4 = isCorrect(document.getElementById('l4_t').value, 31.7);
+            applyColor('l4_v', v4);
+            applyColor('l4_t', t4);
+            if(v4) score += 13;
+            if(t4) score += 13;
 
             document.getElementById('risultatoFinale').innerHTML = `
-                <div id="punteggioBox">
+                <div id="punteggioBox" style="color: ${score >= 60 ? '#2ecc71' : '#fc3d21'}">
                     MISSIONE CONCLUSA!<br>
                     VALUTAZIONE FINALE: ${score}/100
                 </div>`;
@@ -285,4 +320,3 @@
     </script>
 </body>
 </html>
-
